@@ -59,8 +59,9 @@ var articles = []*Article {
 
 func ArticleCtx(next http.Handler) http.Handler {
 	return http.HandlerFunc( func(w http.ResponseWriter, r *http.Request) {
-		articleID := chi.URLParam(r, "arcticleID")
+		articleID := chi.URLParam(r, "articleID")
 		article, err := dbGetArticle(articleID)
+		fmt.Println("Debug: The article is:", article)
 		if err != nil {
 			render.Status(r, http.StatusNotFound)
 			render.JSON(w, r, http.StatusText(http.StatusNotFound))
@@ -172,6 +173,7 @@ func dbNewArticle(article *Article) (string, error) {
 }
 
 func dbGetArticle(id string) (*Article, error) {
+	fmt.Println("Id:", id)
 	for _, a := range articles {
 		if a.ID == id {
 			return a, nil
