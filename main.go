@@ -1,14 +1,20 @@
 package main
 
 import (
-	"github.com/pressly/chi"
 	"net/http"
+	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
 )
 
 func main() {
 	r := chi.NewRouter()
+
+	r.Use(middleware.RequestID)
+	r.Use(middleware.Logger)
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Welcome"))
 	})
+
 	http.ListenAndServe(":3000", r)
 }
